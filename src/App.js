@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { CardList } from "./components/card-list/card-list.component.jsx";
+import { Searchbox } from "./components/search-box/search-box.component.jsx";
 import './App.css';
 
 
@@ -8,7 +9,8 @@ class App extends Component {
     super();
 
     this.state = {
-      monsters: [ ]
+      monsters: [ ],
+      searchField: "",
     };
   }
 
@@ -20,9 +22,21 @@ class App extends Component {
   }
 
   render() {
+
+    // Distructuring
+    const { monsters, searchField } = this.state; //same as const monsters = this.state.monsters; const searField = this.state.searchField;
+    
+    // Create a new array based on the function that we pass into it:
+    const filteredMonsters = monsters.filter(monster =>
+      monster.name.toLowerCase().includes(searchField.toLowerCase())
+      )
     return (
       <div className="App">
-      <CardList monsters={this.state.monsters} /> 
+      <Searchbox 
+        placeholder="search monsters" 
+        handleChange={e => this.setState({ searchField: e.target.value })} 
+        />
+      <CardList monsters={filteredMonsters} /> 
     </div>
     )
   }
